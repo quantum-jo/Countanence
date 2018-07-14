@@ -42,7 +42,7 @@ if(isset($_POST['submit'])) {
           $_SESSION['username'] = $_POST['uid'];
 
 
-          header("Location: homeScreen.php");
+          header("Location: home.php?login=success");
           exit();
 
         }

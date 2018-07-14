@@ -51,7 +51,7 @@ if(isset($_POST['signupbutton'])) {
           $_SESSION['username']= $_POST['username'];
 
 
-   	 			header("Location: homeScreen.php?signup=success");
+   	 			header("Location: home.php?signup=success");
           exit();
 
    	 		}
