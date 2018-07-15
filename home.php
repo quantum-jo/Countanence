@@ -1,14 +1,14 @@
 <?php
 
   session_start();
-//  include 'connection.php';
+ include 'connection.php';
 
-  // if(!isset($_SESSION['username'])) {
-  //   header('Location: login.php');
-  //   exit();
-  // }
+  if(!isset($_SESSION['username'])) {
+    header('Location: login.php');
+    exit();
+   }
 
-  //include 'createTable.php';
+  include 'createTable.php';
 
  ?>
 
@@ -239,10 +239,6 @@
       document.getElementsByClassName('information')[1].innerText = placeInfo.formatted_address;
 
       document.getElementsByClassName('information')[2].innerText = (placeInfo.rating) ? placeInfo.rating:'No Google rating available';
-
-
-      // document.getElementsByClassName('information')[3].innerText = 'Rate this place';
-      // document.getElementsByClassName('information')[4].innerText = 'Write a Review';
     }
 
 

@@ -6,7 +6,9 @@
   $uid = mysqli_real_escape_string($conn, $uid);
 
   $q = $_GET['q'];
+  $p = $_GET['p'];
 
-  $sql = "INSERT INTO $uid () ";
+  $sql = "UPDATE $uid SET review='$q' WHERE place='$p'";
+  $conn->query($sql);
 
  ?>
