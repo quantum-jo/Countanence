@@ -7,25 +7,27 @@ function review() {
   var wrapper = document.getElementsByClassName('review-wrapper')[0];
   wrapper.style.display = 'block';
 
-  text = document.getElementById('review-textarea').innerText;
+
 }
 
 //Function to store review in database
 function addReview() {
-  console.log('enters function');
   var wrapper = document.getElementsByClassName('review-wrapper')[0];
   wrapper.style.display = 'none';
 
   var areaName = document.getElementsByClassName('information')[0].innerHTML;
+  text = document.getElementById('review-textarea').value;
+  var rate = document.getElementById('ratingNum').value;
 
-  if(text) {
+  if(text && rate) {
+    console.log('inside if');
     var xhttp = new XMLHttpRequest;
     xhttp.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
           console.log('success');
       }
     };
-    xhttp.open('GET', 'addInfo.php?q='+areaName+'&p='+text, true);
+    xhttp.open('GET', 'addInfo.php?q='+JSON.stringify(areaName)+'&p='+JSON.stringify(text)+'&r='+rate, true);
     xhttp.send();
   }
 }
@@ -42,9 +44,9 @@ function save() {
       review();
     }
   };
-  if(!rating) {
+  if(rating == 'No Google rating available') {
     rating = 0;
   }
-  xhttp.open('GET', 'savePlace.php?q='+placeName+'&p='+address+'&r='+rating);
+  xhttp.open('GET', 'savePlace.php?q='+JSON.stringify(placeName)+'&p='+JSON.stringify(address)+'&r='+rating);
   xhttp.send();
 }

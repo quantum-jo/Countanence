@@ -7,8 +7,16 @@
 
   $q = $_GET['q'];
   $p = $_GET['p'];
+  $r = $_GET['r'];
 
-  $sql = "UPDATE $uid SET review='$q' WHERE place='$p'";
-  $conn->query($sql);
+  $sql = "UPDATE $uid SET review='$p' WHERE place='$q'";
+  if(!$conn->query($sql)) {
+    die("queryfailed!".mysqli_error($conn));
+  }
+
+  $sql = "UPDATE $uid SET rating='$r' WHERE place='$q'";
+  if(!$conn->query($sql)) {
+    die("queryfailed!".mysqli_error($conn));
+  }
 
  ?>

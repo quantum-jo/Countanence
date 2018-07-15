@@ -10,7 +10,9 @@
   $r = $_GET['r'];
   $s = 'nothing';
 
-  $sql = "INSERT INTO $uid (place, address, rating, review) VALUES ('$q', '$p', $r, '$s')";
-  $conn->query($sql);
+  $sql = "INSERT INTO $uid (place, address, rating, review) VALUES ('$q', '$p', '$r', '$s')";
+  if(!$conn->query($sql)) {
+    die("queryfailed!".mysqli_error($conn));
+  }
 
  ?>

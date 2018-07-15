@@ -141,6 +141,15 @@
       background: rgb(0, 153, 255);
     }
 
+    #ratingNum {
+      width: 20%;
+      padding: 0;
+      margin: 5px 10px 10px 0;
+      border: 0;
+      border-radius: 4px;
+    }
+
+
     #review-textarea {
       width: 100%;
       padding: 10px;
@@ -180,7 +189,7 @@
               <ul>
                 <li><a href="#" onclick="activity()">Activity</a></li>
                 <li><a href="#" onclick="findUsers()">Find Users</a></li>
-                <li><a href="#" onclick="saved()">Saved Places</a></li>
+                <li><a href="#" onclick="lib()">Saved Places</a></li>
                 <li><a href="#" onclick="logout()">Log Out</a></li>
               </ul>
             </nav>
@@ -194,8 +203,8 @@
             <a href="#" class="information"></a>
             <a href="#" class="information"></a>
             <a href="#" class="information"></a>
-            <a href="#" class="information" onclick="rate()"></a>
-            <a href="#" class="information" onclick="review()"></a>
+            <a href="#" class="information"></a>
+            <a href="#" class="information"></a>
             <a href="#" class="information" onclick="save()" id="saviour">Save</a>
           </div>
        </div>
@@ -213,8 +222,12 @@
     <!--Box for writing review -->
     <div class="review-wrapper">
       <a href="javascript:void(0)" class="closebtn" onclick="closeDiv()" id="review-closer">&times;</a>
+      <div>
+        <h2>Rate this place:</h2>
+        <input type="number" id="ratingNum">/5
+      </div>
       <h2>Write a Review:</h2>
-      <textarea name="review-area" rows="8" cols="80" id="review-textarea"></textarea>
+      <textarea name="texter" rows="8" cols="80" id="review-textarea"></textarea>
       <button type="button" name="button" id="clickButton" onclick="addReview()">Submit</button>
     </div>
 
@@ -268,6 +281,10 @@
 
     function activity() {
       window.location = 'activity.php';
+    }
+
+    function lib() {
+      window.location = 'library.php';
     }
 
   </script>
