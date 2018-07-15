@@ -1,26 +1,34 @@
+var text;
+
+//Function to write review
 function review() {
-  document.getElementById('sideContent0').style.display = 'none';
+  document.getElementById('mySidenav').style.backgroundColor = '#ccc';
 
-  var content = document.getElementById('sideContent1')
-  var textarea = document.createElement('textarea');
-  textarea.setAttribute('class', 'reviewArea');
-  content.appendChild(textarea);
+  var wrapper = document.getElementsByClassName('review-wrapper')[0];
+  wrapper.style.display = 'block';
 
-  var submit = document.createElement('button');
-  submit.setAttribute('click', text(this));
-  content.appendChild(submit);
+  text = document.getElementById('review-textarea').innerText;
 }
 
-function text() {
-  var reviewText = this.parentNode.firstChild.innerText;
-  console.log(reviewText);
+//Function to store review in database
+function addReview() {
+  console.log('enters function');
 
-  var xhttp = new XMLHttpRequest;
-  xhttp.onreadystatechange = function() {
-    if(this.readyState == 4 && this.status == 200) {
-      conosle.log('success');
-    }
-  };
-  xhttp.open('GET', 'addInfo.php?q='+reviewText, true);
-  xhttp.send();
+  // if(text) {
+  //   var xhttp = new XMLHttpRequest;
+  //   xhttp.onreadystatechange = function() {
+  //     if(this.readyState == 4 && this.status == 200) {
+  //         console.log('success');
+  //     }
+  //   };
+  //   xhttp.open('GET', 'addInfo.php?q='+text, true);
+  //   xhttp.send();
+  // }
+}
+
+//Function to save a place to user library
+function save() {
+  var placeName = document.getElementsByClassName('information')[0].innerText;
+  var address = document.getElementsByClassName('information')[1].innerText;
+  review();
 }

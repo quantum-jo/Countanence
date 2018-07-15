@@ -1,3 +1,17 @@
+<?php
+
+  session_start();
+//  include 'connection.php';
+
+  // if(!isset($_SESSION['username'])) {
+  //   header('Location: login.php');
+  //   exit();
+  // }
+
+  //include 'createTable.php';
+
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,7 +43,7 @@
 
       header {
         height: 50px;
-        background: #ddd;
+        background: #444;
       }
 
       header nav {
@@ -38,7 +52,7 @@
 
       header nav ul {
         text-decoration: none;
-        padding-top: 20px;
+        padding-top: 13px;
         text-align: center;
       }
 
@@ -46,7 +60,8 @@
         display: inline;
         width: 30px;
         padding: 5px;
-        background: #bbb;
+        background:rgb(0, 153, 255);
+        border-radius: 4px;
       }
 
       header nav ul li:hover {
@@ -57,7 +72,9 @@
 
       header nav ul li a {
         text-decoration: none;
+        color: #222;
       }
+
     </style>
 
     <style>
@@ -69,7 +86,7 @@
         z-index: 1; /* Stay on top */
         top: 0; /* Stay at the top */
         left: 0;
-        background-color: #111; /* Black*/
+        background-color: #ddd; /* Black*/
         overflow-x: hidden; /* Disable horizontal scroll */
         padding-top: 60px; /* Place content 60px from the top */
         transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -110,43 +127,97 @@
         .sidenav a {font-size: 18px;}
     }
 
+    .review-wrapper {
+        z-index: 1;
+        margin: auto;
+        margin-left: 300px;
+        padding: 5px;
+        display: none;
+        position: absolute;
+        background: #ddd;
+    }
+
+    h2 {
+      background: rgb(0, 153, 255);
+    }
+
+    #review-textarea {
+      width: 100%;
+      padding: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 4px;
+      background: rgb(0, 153, 255);
+      padding: 3px;
+    }
+
+    #review-closer {
+      float: right;
+      text-decoration: none;
+      color: #000;
+    }
+
+    #saviour {
+      width: 50px;
+      height: 30px;
+      font-size: 16px;
+      background: #111;
+      color: #fff;
+      padding: 5px 0 0 5px;
+      border: 0;
+      border-radius: 4px;
+      margin-left: 50px;
+    }
     </style>
 
   </head>
   <body>
-    <header>
-        <nav>
-          <ul>
-            <li><a href="#" onclick="activity()">Activity</a></li>
-            <li><a href="#" onclick="findUsers()">Find Users</a></li>
-            <li><a href="#" onclick="logout()">Log Out</a></li>
-          </ul>
-        </nav>
-    </header>
+        <header>
+            <nav>
+              <ul>
+                <li><a href="#" onclick="activity()">Activity</a></li>
+                <li><a href="#" onclick="findUsers()">Find Users</a></li>
+                <li><a href="#" onclick="saved()">Saved Places</a></li>
+                <li><a href="#" onclick="logout()">Log Out</a></li>
+              </ul>
+            </nav>
+        </header>
 
-    <div id="mySidenav" class="sidenav">
-      <div id="sideContent0">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" class="information"></a>
-        <a href="#" class="information"></a>
-        <a href="#" class="information"></a>
-        <a href="#" class="information" onclick="rate()"></a>
-        <a href="#" class="information" onclick="review()"></a>
+
+        <!--sidenav containing links to rate and review-->
+        <div id="mySidenav" class="sidenav">
+          <div id="sideContent0">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="#" class="information"></a>
+            <a href="#" class="information"></a>
+            <a href="#" class="information"></a>
+            <a href="#" class="information" onclick="rate()"></a>
+            <a href="#" class="information" onclick="review()"></a>
+            <a href="#" class="information" onclick="save()" id="saviour">Save</a>
+          </div>
+       </div>
+
+
+    <!--Map gets loaded into this div-->
+    <div id="main">
+      <div id="map"></div>
+      <div class="main-search">
+        <input type='text' placeholder='Search Box' id="pac-input" class="controls">
       </div>
-      <div id="sideContent1"></div>
-   </div>
+    </div>
 
 
+    <!--Box for writing review -->
+    <div class="review-wrapper">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeDiv()" id="review-closer">&times;</a>
+      <h2>Write a Review:</h2>
+      <textarea name="review-area" rows="8" cols="80" id="review-textarea"></textarea>
+      <button type="button" name="button" id="clickButton" onclick="addReview()">Submit</button>
+    </div>
 
-<!--<span onclick="openNav()">open</span>-->
-
-
-<div id="main">
-  <div id="map"></div>
-  <div class="main-search">
-    <input type='text' placeholder='Search Box' id="pac-input" class="controls">
-  </div>
-</div>
 
 
     <script src="map.js"></script>
@@ -160,7 +231,6 @@
 
       /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
     function openNav(placeInfo) {
-
       document.getElementById("mySidenav").style.width = "250px";
       document.getElementById("main").style.marginLeft = "250px";
       document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
@@ -168,20 +238,23 @@
       document.getElementsByClassName('information')[0].innerText = placeInfo.name;
       document.getElementsByClassName('information')[1].innerText = placeInfo.formatted_address;
 
-      if(placeInfo.rating) {
-        document.getElementsByClassName('information')[2].innerText = placeInfo.rating;
-      }
-      document.getElementsByClassName('information')[3].innerText = 'Rate this place';
-      document.getElementsByClassName('information')[4].innerText = 'Write a Review';
+      document.getElementsByClassName('information')[2].innerText = (placeInfo.rating) ? placeInfo.rating:'No Google rating available';
+
+
+      // document.getElementsByClassName('information')[3].innerText = 'Rate this place';
+      // document.getElementsByClassName('information')[4].innerText = 'Write a Review';
     }
+
 
     /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
     function closeNav() {
-
       document.getElementById("mySidenav").style.width = "0";
       document.getElementById("main").style.marginLeft = "0";
       document.body.style.backgroundColor = "white";
+    }
 
+    function closeDiv() {
+      document.getElementsByClassName('review-wrapper')[0].style.display = 'none';
     }
 
   </script>
@@ -190,22 +263,17 @@
 
   <script>
     function logout() {
-
       window.location = 'welcome.html';
-
     }
 
     function findUsers() {
-
       window.location = 'users.php';
-
     }
 
     function activity() {
-
       window.location = 'activity.php';
-
     }
+
   </script>
 
 

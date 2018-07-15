@@ -4,6 +4,6 @@
 $dbServername = "localhost";
 $dbUsername = "root";
 $dbPassname = "";
-$dbName = "vade-mecum";
+$dbName = "countanence";
 
 $conn = mysqli_connect($dbServername, $dbUsername, $dbPassname, $dbName);
