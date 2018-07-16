@@ -27,7 +27,7 @@ function addReview() {
           console.log('success');
       }
     };
-    xhttp.open('GET', 'addInfo.php?q='+JSON.stringify(areaName)+'&p='+JSON.stringify(text)+'&r='+rate, true);
+    xhttp.open('GET', 'addInfo.php?q='+areaName+'&p='+text+'&r='+rate, true);
     xhttp.send();
   }
 }
@@ -47,6 +47,6 @@ function save() {
   if(rating == 'No Google rating available') {
     rating = 0;
   }
-  xhttp.open('GET', 'savePlace.php?q='+JSON.stringify(placeName)+'&p='+JSON.stringify(address)+'&r='+rating);
+  xhttp.open('GET', 'savePlace.php?q='+placeName+'&p='+address+'&r='+rating);
   xhttp.send();
 }

@@ -287,6 +287,10 @@
       window.location = 'library.php';
     }
 
+    function lib() {
+      window.location = 'findAllUsers.php';
+    }
+
   </script>
 
 

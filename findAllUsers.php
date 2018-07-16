@@ -9,7 +9,7 @@
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <title>Places Library</title>
+     <title>Other Users</title>
      <style>
 
       body {
@@ -72,12 +72,11 @@
      </style>
    </head>
    <body>
-
      <header>
          <nav>
            <ul>
              <li><a href="home.php">Home</a></li>
-             <li><a href="#">Saved Places</a></li>
+             <li><a href="#">Other Users</a></li>
            </ul>
          </nav>
      </header>
@@ -86,50 +85,82 @@
        <div class="content"></div>
      </div>
 
-     <script>
-       var data = new Array();
+     <script type="text/javascript">
+        var wrapper = document.getElementsByClassName('content')[0];
+        var users = new Array();
+        var otherUserPlaces = new Array();
+        var i = 0;
 
-       function getData() {
-         var i = 0;
+       function getAllUsers() {
          var xhttp = new XMLHttpRequest;
          xhttp.onreadystatechange = function() {
            if(this.readyState == 4 && this.status == 200) {
-             data = JSON.parse(this.responseText);
-             while(i != data.length) {
-               var list = data[i];
-               drawToDOM(list);
-               i++;
-             }
+             users = JSON.parse(this.responseText);
+             drawToDOM(users);
            }
          };
-         xhttp.open('GET', 'getAllPlaces.php', true);
+         xhttp.open('GET', 'getUsersList.php', true);
          xhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
          xhttp.send();
        }
 
-       function drawToDOM(list) {
-         var content = document.getElementsByClassName('content')[0];
+
+       function drawToDOM(users) {
+
+         while(i != users.length) {
+           var items = document.createElement('div');
+           items.classList.add('items');
+           items.id = i;
+           items.setAttribute('click', userPlaceList(this));
+
+           var text = document.createTextNode(users[i]);
+           items.appendChild(text);
+
+           wrapper.appendChild(items);
+           i++;
+         }
+       }
+
+       function userPlaceList(event) {
+          while(wrapper.firstChild) {
+            wrapper.removeChild(wrapper.firstChild);
+          }
+
+         var id = event.id;
+         var userName = users[id];
+
+         var xhttp = new XMLHttpRequest;
+         xhttp.onreadystatechange = function() {
+           if(this.readyState == 4 && this.status == 200) {
+              otherUserPlaces = JSON.parse(this.responseText);
+              drawPlacesToDOM(otherUserPlaces);
+           }
+         };
+         xhttp.open('GET', 'getAllPlaceList.php?q='+userName, true);
+         xhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+         xhttp.send();
+       }
+
+       function drawPlacesToDOM(otherUserPlaces) {
 
          var items = document.createElement('div');
          items.classList.add('items');
 
          var placeDetails = document.createElement('div');
-         var googleDetails = 'Place: '+list.place + ',' + list.address;
+         var googleDetails = 'Place: '+otherUserPlaces.place + ',' + otherUserPlaces.address;
          var placeText = document.createTextNode(googleDetails);
          placeDetails.appendChild(placeText);
          items.appendChild(placeDetails);
 
-         var userDetails = document.createElement('div');
-         var userRatingText = document.createTextNode('Rating: '+list.rating+'  ');
-         var userReviewText = document.createTextNode('Review: '+list.review);
+         var userDetails = otherUserPlaces.createElement('div');
+         var userRatingText = document.createTextNode('Rating: '+otherUserPlaces.rating+'  ');
+         var userReviewText = document.createTextNode('Review: '+otherUserPlaces.review);
          userDetails.appendChild(userRatingText);
          userDetails.appendChild(userReviewText);
          items.appendChild(userDetails);
 
-         content.appendChild(items);
+         wrapper.appendChild(items);
        }
-
-       getData();
      </script>
    </body>
  </html>
