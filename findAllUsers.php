@@ -111,7 +111,7 @@
            var items = document.createElement('div');
            items.classList.add('items');
            items.id = i;
-           items.setAttribute('click', userPlaceList(this));
+           items.setAttribute('onclick', 'userPlaceList(this)');
 
            var text = document.createTextNode(users[i]);
            items.appendChild(text);
@@ -129,11 +129,18 @@
          var id = event.id;
          var userName = users[id];
 
+
          var xhttp = new XMLHttpRequest;
          xhttp.onreadystatechange = function() {
            if(this.readyState == 4 && this.status == 200) {
               otherUserPlaces = JSON.parse(this.responseText);
-              drawPlacesToDOM(otherUserPlaces);
+              var j = 0;
+              while(j != otherUserPlaces.length) {
+                var tempPlace = otherUserPlaces[j];
+                drawPlacesToDOM(tempPlace);
+                j++;
+              }
+
            }
          };
          xhttp.open('GET', 'getAllPlaceList.php?q='+userName, true);
@@ -141,26 +148,28 @@
          xhttp.send();
        }
 
-       function drawPlacesToDOM(otherUserPlaces) {
+       function drawPlacesToDOM(tempPlace) {
 
          var items = document.createElement('div');
          items.classList.add('items');
 
          var placeDetails = document.createElement('div');
-         var googleDetails = 'Place: '+otherUserPlaces.place + ',' + otherUserPlaces.address;
+         var googleDetails = 'Place: '+tempPlace.place + ',' + tempPlace.address;
          var placeText = document.createTextNode(googleDetails);
          placeDetails.appendChild(placeText);
          items.appendChild(placeDetails);
 
-         var userDetails = otherUserPlaces.createElement('div');
-         var userRatingText = document.createTextNode('Rating: '+otherUserPlaces.rating+'  ');
-         var userReviewText = document.createTextNode('Review: '+otherUserPlaces.review);
+         var userDetails = document.createElement('div');
+         var userRatingText = document.createTextNode('Rating: '+tempPlace.rating+'  ');
+         var userReviewText = document.createTextNode('Review: '+tempPlace.review);
          userDetails.appendChild(userRatingText);
          userDetails.appendChild(userReviewText);
          items.appendChild(userDetails);
 
          wrapper.appendChild(items);
        }
+
+       getAllUsers();
      </script>
    </body>
  </html>

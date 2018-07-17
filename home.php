@@ -287,7 +287,7 @@
       window.location = 'library.php';
     }
 
-    function lib() {
+    function findUsers() {
       window.location = 'findAllUsers.php';
     }
 
