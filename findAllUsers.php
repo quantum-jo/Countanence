@@ -57,6 +57,7 @@
        }
 
        .items {
+         position: relative;
          height: 50px;
          border: 2px solid #ccc;
          margin-bottom: 20px;
@@ -66,6 +67,24 @@
        .items:hover {
          background: rgb(18, 22, 33);
          color: #fff;
+         cursor: pointer;
+       }
+
+       .items .friendZone {
+         position: absolute;
+         top: 17px;
+         right: 20px;
+       }
+
+       .addFriendButton {
+         background: lightblue;
+         padding: 5px;
+         border: 0;
+         border-radius: 4px;
+         color: #444;
+       }
+
+       .addFriendButton:hover {
          cursor: pointer;
        }
 
@@ -90,6 +109,7 @@
         var users = new Array();
         var otherUserPlaces = new Array();
         var i = 0;
+        var eventReg;
 
        function getAllUsers() {
          var xhttp = new XMLHttpRequest;
@@ -115,6 +135,16 @@
 
            var text = document.createTextNode(users[i]);
            items.appendChild(text);
+
+           // var friendZone = document.createElement('div');
+           // friendZone.classList.add('friendZone');
+           //
+           // var addFriendButton = document.createElement('button');
+           // addFriendButton.innerHTML = 'Add Friend';
+           // addFriendButton.classList.add('addFriendButton');
+           // addFriendButton.setAttribute('onclick', 'friendZoneUser(this)')
+           // friendZone.appendChild(addFriendButton);
+           // items.appendChild(friendZone);
 
            wrapper.appendChild(items);
            i++;
@@ -167,6 +197,12 @@
          items.appendChild(userDetails);
 
          wrapper.appendChild(items);
+       }
+
+       function friendZoneUser(finder) {
+         var id = finder.parentNode.parentNode.id;
+         var friendUser = users[id];
+
        }
 
        getAllUsers();
